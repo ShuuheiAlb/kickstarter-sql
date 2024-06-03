@@ -1,0 +1,7 @@
+
+__pycache__/
+~lock
+
+auth.txt
+kickstarter.zip
+Kickstarter*.csv

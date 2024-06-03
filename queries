@@ -1,0 +1,42 @@
+-- Database: kickstarter
+
+-- DROP DATABASE IF EXISTS kickstarter;
+
+CREATE DATABASE kickstarter
+    WITH
+    OWNER = rotisayabundar
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_AU.UTF-8'
+    LC_CTYPE = 'en_AU.UTF-8'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+	
+-- Preclean:
+-- * Null string
+-- * Timestamp
+
+-- Create table:
+-- category, creator, location, photo, profile, urls, video is JSON
+CREATE TABLE ks (backers_count int, blurb varchar, category varchar,
+				 converted_pledged_amount int NOT NULL, country char(2), country_displayable_name varchar,
+				 created_at text, creator varchar, currency char(3), currency_symbol char(2),
+				 currency_trailing_code boolean, current_currency char(3), deadline text, 
+				 disable_communication boolean, fx_rate double precision, goal int, id int,
+				 is_disliked boolean, is_launched boolean, is_liked boolean, is_starrable boolean,
+				 launched_at text, location varchar, name varchar, percent_funded double precision, photo varchar,
+				 pledged double precision, prelaunch_activated boolean, profile varchar, slug varchar,
+				 source_url varchar, spotlight boolean, staff_pick boolean, state varchar, state_changed_at text,
+				 static_usd_rate double precision, urls varchar, usd_exchange_rate double precision,
+				 usd_pledged double precision, usd_type varchar, video varchar);
+
+-- SOON zip file step:
+-- $ mkfifo /tmp/omyfifo
+-- $ zcat kickstarter___.zip > /tmp/omyfifo &
+-- $ (Via psql kickstarter) copy ks from '/tmp/omyfifo';
+-- $ (When finished) rm /tmp/omyfifo
+COPY ks FROM '/home/rotisayabundar/Downloads/GitHub/kickstarter-sql/Kickstarter.csv' (format csv, null "null", HEADER);
+UPDATE ks SET created_at = to_timestamp(created_at)
+-- (created_at, deadline, launched_at, state_changed_at)
+
+select * from ks;
