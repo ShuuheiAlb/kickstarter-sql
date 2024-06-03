@@ -12,5 +12,5 @@ Some SQL queries are then performed.
 
 ## Other tools used
 
-pgAdmin4 (debugger extension)
+pgAdmin4
 
